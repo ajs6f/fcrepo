@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>fcrepo-integrationtest</artifactId>
+		<groupId>org.fcrepo</groupId>
+		<version>3.6-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>fcrepo-integrationtest-jmeter</artifactId>
+	<name>JMeter experiment</name>
+	<description>Integrating JMeter with Maven, testing SOAP samplers.</description>
+
+	<properties>
+		<fedora.home>target/fedora-home</fedora.home>
+	</properties>
+
+	<build>
+		<testOutputDirectory>target</testOutputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.1.4</version>
+				<configuration>
+					<container>
+						<containerId>tomcat7x</containerId>
+						<zipUrlInstaller>
+							<url>https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.25/bin/apache-tomcat-7.0.25.zip</url>
+						</zipUrlInstaller>
+					</container>
+
+
+					<!-- nb this is also required as well as specifying home above -->
+					<configuration>
+						<deployables>
+							<deployable>
+								<artifactId>fcrepo-webapp-fedora</artifactId>
+								<groupId>org.fcrepo</groupId>
+								<type>war</type>
+								<properties>
+									<!-- put our test deployment in URL tree -->
+									<context>fedora</context>
+								</properties>
+							</deployable>
+						</deployables>
+						<properties>
+							<cargo.jvmargs>-XX:MaxPermSize=512M -Xmx512M
+							-Dfedora.home=${fedora.home}
+							-Djavax.net.ssl.trustStore=${fedora.home}/server/truststore
+							 -Djavax.net.ssl.trustStorePassword=tomcat</cargo.jvmargs>
+							<!-- do we need to pass in any fedora-specific properties? -->
+							<!-- should probably be passing in other args, eg ports? -->
+						</properties>
+						<!-- does this work in cargo? -->
+						<!-- no! <systemPropertyVariables> <FEDORA_HOME>${fedora.home}</FEDORA_HOME> 
+							<PEP_NOCACHE>true</PEP_NOCACHE> </systemPropertyVariables> -->
+						<!-- also tried this to add the decorator lib, but doesn't seem to 
+							work -->
+					</configuration>
+				</configuration>
+
+				<executions>
+					<!-- starting tomcat prior to integration tests -->
+					<execution>
+						<id>start-container</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<!-- stopping tomcat after integration tests -->
+					<execution>
+						<id>stop-container</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.lazerycode.jmeter</groupId>
+				<artifactId>jmeter-maven-plugin</artifactId>
+				<version>1.4-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>jmeter-tests</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>jmeter</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.fcrepo</groupId>
+			<artifactId>fcrepo-webapp-fedora</artifactId>
+			<version>3.6-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Sonatype Repository</id>
+			<url>https://oss.sonatype.org/content/groups/staging</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
