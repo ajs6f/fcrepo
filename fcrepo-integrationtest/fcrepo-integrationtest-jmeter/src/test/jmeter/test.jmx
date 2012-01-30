@@ -11,7 +11,19 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+      <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
+        <collectionProp name="AuthManager.auth_list">
+          <elementProp name="" elementType="Authorization">
+            <stringProp name="Authorization.url">http://localhost</stringProp>
+            <stringProp name="Authorization.username">fedoraAdmin</stringProp>
+            <stringProp name="Authorization.password">fedoraAdmin</stringProp>
+            <stringProp name="Authorization.domain"></stringProp>
+            <stringProp name="Authorization.realm"></stringProp>
+          </elementProp>
+        </collectionProp>
+      </AuthManager>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Simple SOAP tests" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -26,29 +38,157 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
-          <collectionProp name="AuthManager.auth_list">
-            <elementProp name="" elementType="Authorization">
-              <stringProp name="Authorization.url">http://fedora-prod02.lib.virginia.edu</stringProp>
-              <stringProp name="Authorization.username">fedoraAdmin</stringProp>
-              <stringProp name="Authorization.password">fedoraAdmin</stringProp>
-              <stringProp name="Authorization.domain"></stringProp>
-              <stringProp name="Authorization.realm"></stringProp>
-            </elementProp>
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="ingest" enabled="true">
+          <collectionProp name="ModuleController.node_path">
+            <stringProp name="-1227702913">WorkBench</stringProp>
+            <stringProp name="764597751">Test Plan</stringProp>
+            <stringProp name="-1184149916">ingest</stringProp>
           </collectionProp>
-        </AuthManager>
+        </ModuleController>
         <hashTree/>
-        <WebServiceSampler guiclass="WebServiceSamplerGui" testclass="WebServiceSampler" testname="export Request" enabled="true">
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="export" enabled="true">
+          <collectionProp name="ModuleController.node_path">
+            <stringProp name="-1227702913">WorkBench</stringProp>
+            <stringProp name="764597751">Test Plan</stringProp>
+            <stringProp name="-1289153612">export</stringProp>
+          </collectionProp>
+        </ModuleController>
+        <hashTree/>
+      </hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="ingest" enabled="true"/>
+      <hashTree>
+        <WebServiceSampler guiclass="WebServiceSamplerGui" testclass="WebServiceSampler" testname="ingest Request" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">fedora-prod02.lib.virginia.edu</stringProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.path">/fedora/services/management</stringProp>
           <stringProp name="WebserviceSampler.wsdl_url">http://fedora-prod02.lib.virginia.edu:8080/fedora/wsdl?api=API-M</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
-          <stringProp name="Soap.Action">export</stringProp>
+          <stringProp name="Soap.Action">http://www.fedora.info/definitions/1/0/api/#ingest</stringProp>
+          <stringProp name="HTTPSamper.xml_data">&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+&lt;soap:Body&gt;
+&lt;ingest&gt;
+
+&lt;objectXML&gt;
+PGZveG1sOmRpZ2l0YWxPYmplY3QgUElEPSJkZW1vOjE4IiBWRVJTSU9OPSIxLjEiDQogIHhtbG5z
+OmZveG1sPSJpbmZvOmZlZG9yYS9mZWRvcmEtc3lzdGVtOmRlZi9mb3htbCMiDQogIHhtbG5zOnhz
+aT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhzaTpzY2hlbWFM
+b2NhdGlvbj0iaW5mbzpmZWRvcmEvZmVkb3JhLXN5c3RlbTpkZWYvZm94bWwjIGh0dHA6Ly93d3cu
+ZmVkb3JhLmluZm8vZGVmaW5pdGlvbnMvMS8wL2ZveG1sMS0xLnhzZCI+DQogIDxmb3htbDpvYmpl
+Y3RQcm9wZXJ0aWVzPg0KICAgIDxmb3htbDpwcm9wZXJ0eSBOQU1FPSJpbmZvOmZlZG9yYS9mZWRv
+cmEtc3lzdGVtOmRlZi9tb2RlbCNzdGF0ZSIgVkFMVUU9IkFjdGl2ZSIvPg0KICAgIDxmb3htbDpw
+cm9wZXJ0eSBOQU1FPSJpbmZvOmZlZG9yYS9mZWRvcmEtc3lzdGVtOmRlZi9tb2RlbCNsYWJlbCIg
+VkFMVUU9IkRhdGEgT2JqZWN0IChFQ0RMIFBhcGVyKSBmb3IgU2ltcGxlIERvY3VtZW50IERlbW8i
+Lz4NCiAgICA8Zm94bWw6cHJvcGVydHkgTkFNRT0iaW5mbzpmZWRvcmEvZmVkb3JhLXN5c3RlbTpk
+ZWYvbW9kZWwjb3duZXJJZCIgVkFMVUU9ImZlZG9yYUFkbWluIi8+DQogICAgPGZveG1sOnByb3Bl
+cnR5IE5BTUU9ImluZm86ZmVkb3JhL2ZlZG9yYS1zeXN0ZW06ZGVmL21vZGVsI2NyZWF0ZWREYXRl
+IiBWQUxVRT0iMjAwOC0wNy0wMlQwNTowOTo0Mi4wMTVaIi8+DQogICAgPGZveG1sOnByb3BlcnR5
+IE5BTUU9ImluZm86ZmVkb3JhL2ZlZG9yYS1zeXN0ZW06ZGVmL3ZpZXcjbGFzdE1vZGlmaWVkRGF0
+ZSIgVkFMVUU9IjIwMDgtMDctMDJUMDU6MDk6NDIuMDE1WiIvPg0KICA8L2ZveG1sOm9iamVjdFBy
+b3BlcnRpZXM+DQogIDxmb3htbDpkYXRhc3RyZWFtIENPTlRST0xfR1JPVVA9IlgiIElEPSJEQyIg
+U1RBVEU9IkEiIFZFUlNJT05BQkxFPSJ0cnVlIj4NCiAgICA8Zm94bWw6ZGF0YXN0cmVhbVZlcnNp
+b24gQ1JFQVRFRD0iMjAwOC0wNy0wMlQwNTowOTo0My4zMTJaIg0KICAgICAgRk9STUFUX1VSST0i
+aHR0cDovL3d3dy5vcGVuYXJjaGl2ZXMub3JnL09BSS8yLjAvb2FpX2RjLyIgSUQ9IkRDMS4wIg0K
+ICAgICAgTEFCRUw9IkR1YmxpbiBDb3JlIFJlY29yZCBmb3IgdGhpcyBvYmplY3QiIE1JTUVUWVBF
+PSJ0ZXh0L3htbCI+DQogICAgICA8Zm94bWw6eG1sQ29udGVudD4NCiAgICAgICAgPG9haV9kYzpk
+YyB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOm9haV9k
+Yz0iaHR0cDovL3d3dy5vcGVuYXJjaGl2ZXMub3JnL09BSS8yLjAvb2FpX2RjLyI+DQogICAgICAg
+ICAgPGRjOnRpdGxlPlRoZSBNZWxsb24gRmVkb3JhIFByb2plY3Q6IERpZ2l0YWwgTGlicmFyeSBB
+cmNoaXRlY3R1cmUgTWVldHMgWE1MIGFuZCBXZWIgU2VydmljZXM8L2RjOnRpdGxlPg0KICAgICAg
+ICAgIDxkYzpjcmVhdG9yPlNhbmRyYSBQYXlldHRlPC9kYzpjcmVhdG9yPg0KICAgICAgICAgIDxk
+YzpjcmVhdG9yPlRob3JudG9uIFN0YXBsZXM8L2RjOmNyZWF0b3I+DQogICAgICAgICAgPGRjOnN1
+YmplY3Q+RmVkb3JhPC9kYzpzdWJqZWN0Pg0KICAgICAgICAgIDxkYzpzdWJqZWN0PnJlcG9zaXRv
+cnkgYXJjaGl0ZWN0dXJlPC9kYzpzdWJqZWN0Pg0KICAgICAgICAgIDxkYzpzdWJqZWN0PmRpZ2l0
+YWwgbGlicmFyaWVzPC9kYzpzdWJqZWN0Pg0KICAgICAgICAgIDxkYzpzdWJqZWN0PndlYiBzZXJ2
+aWNlPC9kYzpzdWJqZWN0Pg0KICAgICAgICAgIDxkYzpzdWJqZWN0Pm9wZW4gc291cmNlIHNvZnR3
+YXJlPC9kYzpzdWJqZWN0Pg0KICAgICAgICAgIDxkYzpkZXNjcmlwdGlvbj5QYXBlciBvbiB0aGUg
+RmVkb3JhIHByb2plY3QsIHByZXNlbnRlZCBhdCB0aGUgRXVyb3BlYW4gRGlnaXRhbCBMaWJyYXJ5
+IENvbmZlcmVuY2UgKEVDREwpIGluIDIwMDIsIFJvbWUsIEl0YWx5PC9kYzpkZXNjcmlwdGlvbj4N
+CiAgICAgICAgICA8ZGM6cHVibGlzaGVyPlNwcmluZ2VyPC9kYzpwdWJsaXNoZXI+DQogICAgICAg
+ICAgPGRjOmRhdGU+MjAwMi0wOS0xNzwvZGM6ZGF0ZT4NCiAgICAgICAgICA8ZGM6Zm9ybWF0PmFw
+cGxpY2F0aW9uL3BkZjwvZGM6Zm9ybWF0Pg0KICAgICAgICAgIDxkYzpmb3JtYXQ+YXBwbGljYXRp
+b24vbXN3b3JkPC9kYzpmb3JtYXQ+DQogICAgICAgICAgPGRjOmZvcm1hdD5hcHBsaWNhdGlvbi9w
+czwvZGM6Zm9ybWF0Pg0KICAgICAgICAgIDxkYzppZGVudGlmaWVyPmRlbW86MTg8L2RjOmlkZW50
+aWZpZXI+DQogICAgICAgICAgPGRjOnJlbGF0aW9uPmh0dHA6Ly93d3cuZmVkb3JhLmluZm88L2Rj
+OnJlbGF0aW9uPg0KICAgICAgICAgIDxkYzpyaWdodHM+dW5yZXN0cmljdGVkPC9kYzpyaWdodHM+
+DQogICAgICAgIDwvb2FpX2RjOmRjPg0KICAgICAgPC9mb3htbDp4bWxDb250ZW50Pg0KICAgIDwv
+Zm94bWw6ZGF0YXN0cmVhbVZlcnNpb24+DQogIDwvZm94bWw6ZGF0YXN0cmVhbT4NCiAgDQo8L2Zv
+eG1sOmRpZ2l0YWxPYmplY3Q+DQo=
+&lt;/objectXML&gt;
+&lt;format&gt;info:fedora/fedora-system:FOXML-1.1&lt;/format&gt;
+&lt;logMessage&gt;JMeter throwing objects at ya!&lt;/logMessage&gt;
+
+&lt;/ingest&gt;
+&lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</stringProp>
+          <stringProp name="WebServiceSampler.xml_data_file"></stringProp>
+          <stringProp name="WebServiceSampler.xml_path_loc"></stringProp>
+          <stringProp name="WebserviceSampler.timeout"></stringProp>
+          <stringProp name="WebServiceSampler.memory_cache">true</stringProp>
+          <stringProp name="WebServiceSampler.read_response">true</stringProp>
+          <stringProp name="WebServiceSampler.use_proxy">false</stringProp>
+          <stringProp name="WebServiceSampler.proxy_host"></stringProp>
+          <stringProp name="WebServiceSampler.proxy_port"></stringProp>
+        </WebServiceSampler>
+        <hashTree/>
+        <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+          <boolProp name="XPath.negate">false</boolProp>
+          <stringProp name="XPath.xpath">count(//objectPID)=1</stringProp>
+          <boolProp name="XPath.validate">false</boolProp>
+          <boolProp name="XPath.whitespace">false</boolProp>
+          <boolProp name="XPath.tolerant">false</boolProp>
+          <boolProp name="XPath.namespace">false</boolProp>
+        </XPathAssertion>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="export" enabled="true"/>
+      <hashTree>
+        <WebServiceSampler guiclass="WebServiceSamplerGui" testclass="WebServiceSampler" testname="export Request" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.path">/fedora/services/management</stringProp>
+          <stringProp name="WebserviceSampler.wsdl_url">http://fedora-prod02.lib.virginia.edu:8080/fedora/wsdl?api=API-M</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <stringProp name="Soap.Action">http://www.fedora.info/definitions/1/0/api/#getDatastreamHistory</stringProp>
           <stringProp name="HTTPSamper.xml_data">&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
 &lt;soap:Body&gt;
 &lt;export&gt;

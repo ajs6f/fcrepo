@@ -18,9 +18,6 @@
   <logger name="org.fcrepo" additivity="false" level="INFO">
     <appender-ref ref="FEDORA"/>
   </logger>
-  <logger name="org.fcrepo.server.storage" additivity="false" level="DEBUG">
-    <appender-ref ref="FEDORA"/>
-  </logger>
   
   <!-- Remove the comments around this section to send FeSL debug messages to fesl.log
   <property name="FEDORA_FESL_LOG_PATH"

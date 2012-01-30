@@ -40,7 +40,7 @@
 						<zipUrlInstaller>
 							<url>https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.25/bin/apache-tomcat-7.0.25.zip</url>
 						</zipUrlInstaller>
-						
+
 						<!-- <containerId>jetty8x</containerId> <zipUrlInstaller> <url>http://download.eclipse.org/jetty/stable-8/dist/jetty-distribution-8.0.4.v20111024.zip</url> 
 							</zipUrlInstaller> -->
 
@@ -70,7 +70,7 @@
 				</configuration>
 
 				<executions>
-					<!-- starting tomcat prior to integration tests -->
+					<!-- starting container prior to integration tests -->
 					<execution>
 						<id>start-container</id>
 						<phase>pre-integration-test</phase>
@@ -78,7 +78,7 @@
 							<goal>start</goal>
 						</goals>
 					</execution>
-					<!-- stopping tomcat after integration tests -->
+					<!-- stopping container after integration tests -->
 					<execution>
 						<id>stop-container</id>
 						<phase>post-integration-test</phase>
