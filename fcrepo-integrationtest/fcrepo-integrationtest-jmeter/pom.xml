@@ -9,7 +9,18 @@
 	</parent>
 	<artifactId>fcrepo-integrationtest-jmeter</artifactId>
 	<name>JMeter experiment</name>
-	<description>Integrating JMeter with Maven, testing SOAP samplers.</description>
+	<description>Integrating JMeter with Maven, testing SOAP stuff.</description>
+
+	<contributors>
+		<contributor>
+			<email>ajs6f@virginia.edu</email>
+			<name>A. Soroka</name>
+			<roles>
+				<role>experimentator</role>
+			</roles>
+			<organization>the University of Virginia Library</organization>
+		</contributor>
+	</contributors>
 
 	<properties>
 		<fedora.home>target/fedora-home</fedora.home>
@@ -24,14 +35,22 @@
 				<version>1.1.4</version>
 				<configuration>
 					<container>
+
 						<containerId>tomcat7x</containerId>
 						<zipUrlInstaller>
 							<url>https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.25/bin/apache-tomcat-7.0.25.zip</url>
 						</zipUrlInstaller>
+						
+						<!-- <containerId>jetty8x</containerId> <zipUrlInstaller> <url>http://download.eclipse.org/jetty/stable-8/dist/jetty-distribution-8.0.4.v20111024.zip</url> 
+							</zipUrlInstaller> -->
+
+						<systemProperties>
+							<fedora.home>${fedora.home}</fedora.home>
+							<javax.net.ssl.trustStore>${fedora.home}/server/truststore</javax.net.ssl.trustStore>
+							<javax.net.ssl.trustStorePassword>tomcat</javax.net.ssl.trustStorePassword>
+						</systemProperties>
 					</container>
 
-
-					<!-- nb this is also required as well as specifying home above -->
 					<configuration>
 						<deployables>
 							<deployable>
@@ -45,18 +64,8 @@
 							</deployable>
 						</deployables>
 						<properties>
-							<cargo.jvmargs>-XX:MaxPermSize=512M -Xmx512M
-							-Dfedora.home=${fedora.home}
-							-Djavax.net.ssl.trustStore=${fedora.home}/server/truststore
-							 -Djavax.net.ssl.trustStorePassword=tomcat</cargo.jvmargs>
-							<!-- do we need to pass in any fedora-specific properties? -->
-							<!-- should probably be passing in other args, eg ports? -->
+							<cargo.jvmargs>-XX:MaxPermSize=512M -Xmx512M</cargo.jvmargs>
 						</properties>
-						<!-- does this work in cargo? -->
-						<!-- no! <systemPropertyVariables> <FEDORA_HOME>${fedora.home}</FEDORA_HOME> 
-							<PEP_NOCACHE>true</PEP_NOCACHE> </systemPropertyVariables> -->
-						<!-- also tried this to add the decorator lib, but doesn't seem to 
-							work -->
 					</configuration>
 				</configuration>
 
