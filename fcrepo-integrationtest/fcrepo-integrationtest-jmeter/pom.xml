@@ -23,7 +23,7 @@
 	</contributors>
 
 	<properties>
-		<fedora.home>target/fedora-home</fedora.home>
+		<fedora.home>${basedir}/target/fedora-home</fedora.home>
 	</properties>
 
 	<build>
